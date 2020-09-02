@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Grid, TextField, Button, Box } from "@material-ui/core";
 import axios from "axios";
+import IngredientContainer from "./IngredientContainer";
 
 export default function Ingredients() {
   const [ingredient, setIngredient] = useState("");
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, setIngredients] = useState([{}]);
 
   useEffect(() => {
     getIngredients();
@@ -14,22 +15,22 @@ export default function Ingredients() {
     setIngredient(event.target.value);
   }
 
-  function getIngredients() {
-    axios.get("/ingredients").then(response => setIngredients(response.data));
+  async function getIngredients() {
+    const response = await axios.get("/ingredients");
+    const data = await response.data;
+    setIngredients(data);
   }
 
   function saveIngredient(ingredient) {
-    const newIngredients = [...ingredients, ingredient];
-    setIngredients(newIngredients);
-    axios.post("/ingredient", { name: ingredient });
+    axios.post("/ingredient", { name: ingredient }).then(() => {
+      getIngredients();
+    });
   }
 
   function deleteIngredient(id) {
-    const newIngredients = ingredients.filter(
-      ingredient => ingredient.id !== id
-    );
-    setIngredients(newIngredients);
-    axios.delete("/ingredient/" + id);
+    axios.delete("/ingredient/" + id).then(() => {
+      getIngredients();
+    });
   }
 
   return (
@@ -55,19 +56,17 @@ export default function Ingredients() {
           </Button>
         </Box>
       </Grid>
-      <Grid item>
-        <h2>Ingrédients :</h2>
+      <Grid container justify="center">
         {ingredients && (
-          <ul>
+          <Grid container justify="center" item xs={6}>
             {ingredients.map(ingredient => (
-              <li key={ingredient.id}>
-                {ingredient.name}{" "}
-                <Button onClick={() => deleteIngredient(ingredient.id)}>
-                  X
-                </Button>
-              </li>
+              <IngredientContainer
+                key={ingredient.key}
+                ingredient={ingredient}
+                deleteIngredient={deleteIngredient}
+              />
             ))}
-          </ul>
+          </Grid>
         )}
       </Grid>
     </Grid>
