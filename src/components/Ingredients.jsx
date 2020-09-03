@@ -15,14 +15,13 @@ export default function Ingredients() {
     setIngredient(event.target.value);
   }
 
-  async function getIngredients() {
-    const response = await axios.get("/ingredients");
-    const data = await response.data;
-    setIngredients(data);
+  function getIngredients() {
+    axios.get("/ingredients").then(response => setIngredients(response.data));
   }
 
   function saveIngredient(ingredient) {
-    axios.post("/ingredient", { name: ingredient }).then(() => {
+    const newIngredient = { name: ingredient };
+    axios.post("/ingredient", newIngredient).then(() => {
       getIngredients();
     });
   }
@@ -59,9 +58,9 @@ export default function Ingredients() {
       <Grid container justify="center">
         {ingredients && (
           <Grid container justify="center" item xs={6}>
-            {ingredients.map(ingredient => (
+            {ingredients.map((ingredient, i) => (
               <IngredientContainer
-                key={ingredient.key}
+                key={i}
                 ingredient={ingredient}
                 deleteIngredient={deleteIngredient}
               />
