@@ -34,7 +34,7 @@ export default function Ingredients() {
 
   return (
     <Grid container direction="column" alignItems="center">
-      <h1>Ingrédients</h1>
+      <h1>Ajouter un ingrédient</h1>
       <Grid item>
         <TextField
           style={{ width: "20rem" }}
@@ -51,7 +51,7 @@ export default function Ingredients() {
             variant="contained"
             onClick={() => saveIngredient(ingredient)}
           >
-            Valider
+            Ajouter
           </Button>
         </Box>
       </Grid>

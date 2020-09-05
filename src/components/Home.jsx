@@ -1,11 +1,10 @@
 import React from "react";
-import Ingredients from "./Ingredients";
+import { Grid } from "@material-ui/core";
 
 export default function Home() {
   return (
-    <div>
-      <h1>FeedMe</h1>
-      <Ingredients />
-    </div>
+    <Grid container justify="center">
+      <h1>FeedMee</h1>
+    </Grid>
   );
 }
