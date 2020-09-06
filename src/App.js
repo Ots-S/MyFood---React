@@ -2,7 +2,8 @@ import React from "react";
 import "./App.css";
 import Home from "./components/Home";
 import Drawer from "./components/Drawer";
-import Ingredients from "./components/Ingredients";
+import Ingredients from "./components/Ingredients/Ingredients";
+import Recipes from "./components/Recipes/Recipes";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -21,6 +22,7 @@ export default function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/ingredients" component={Ingredients} />
+          <Route exact path="/recipes" component={Recipes} />
         </Switch>
       </Router>
     </div>

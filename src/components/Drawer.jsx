@@ -18,7 +18,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 const useStyles = makeStyles({
   menu: {
-    width: "13rem",
+    width: "14rem",
   },
 });
 
