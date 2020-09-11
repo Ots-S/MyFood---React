@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Grid, TextField, Box, Button } from "@material-ui/core";
+import { Grid, TextField, Box, Button, Typography } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from "axios";
 import RecipeCard from "./RecipeCard";
@@ -11,6 +11,7 @@ function Recipes(props) {
   const [recipeIngredients, setRecipeIngredients] = useState([]);
   const [recipeName, setRecipeName] = useState("");
   const [recipes, setRecipes] = useState([]);
+  const [errorStatus, setErrorStatus] = useState();
 
   useEffect(() => {
     getIngredients();
@@ -37,7 +38,10 @@ function Recipes(props) {
       name: recipeName,
       ingredients: recipeIngredients,
     };
-    axios.post("/recipe", recipe).then(() => getRecipes());
+    axios
+      .post("/recipe", recipe)
+      .then(() => getRecipes())
+      .catch(error => setErrorStatus(error.response.status));
   }
 
   function deleteRecipe(id) {
@@ -52,6 +56,9 @@ function Recipes(props) {
     <Grid container justify="center" alignItems="center" direction="column">
       <h1>Créer une recette</h1>
       <Grid item>
+        {errorStatus === 406 && (
+          <Typography>Nom de recette déjà existant</Typography>
+        )}
         <TextField
           label="Nom de la recette"
           required

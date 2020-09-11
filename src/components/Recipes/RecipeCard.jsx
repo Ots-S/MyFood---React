@@ -3,13 +3,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
+import { Button, Typography, Grid, Box } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
+    width: 275,
+    height: 300,
   },
   bullet: {
     display: "inline-block",
@@ -26,7 +25,6 @@ const useStyles = makeStyles({
 
 export default function RecipeCard({ recipe, deleteRecipe }) {
   const classes = useStyles();
-  console.log(recipe.ingredients);
   return (
     <Box m={1}>
       <Card className={classes.root}>

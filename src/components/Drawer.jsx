@@ -29,7 +29,7 @@ export default function Drawer() {
     { name: "Home", path: "/", icon: <HomeIcon /> },
     { name: "Ingrédients", path: "/ingredients", icon: <AppleIcon /> },
     { name: "Recettes", path: "/recipes", icon: <ListAltIcon /> },
-    { name: "Livre de Recettes", path: "/cookbook", icon: <MenuBookIcon /> },
+    { name: "Livre de Recettes", path: "/cookbooks", icon: <MenuBookIcon /> },
     { name: "Profil", path: "/user", icon: <AccountCircleIcon /> },
   ];
 

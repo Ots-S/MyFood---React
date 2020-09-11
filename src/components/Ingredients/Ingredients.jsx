@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Grid, TextField, Button, Box } from "@material-ui/core";
+import { Grid, TextField, Button, Box, Typography } from "@material-ui/core";
 import axios from "axios";
 import IngredientContainer from "./IngredientContainer";
 
 export default function Ingredients() {
   const [ingredient, setIngredient] = useState("");
   const [ingredients, setIngredients] = useState([{}]);
+  const [errorStatus, setErrorStatus] = useState();
 
   useEffect(() => {
     getIngredients();
@@ -21,9 +22,12 @@ export default function Ingredients() {
 
   function saveIngredient(ingredient) {
     const newIngredient = { name: ingredient };
-    axios.post("/ingredient", newIngredient).then(() => {
-      getIngredients();
-    });
+    axios
+      .post("/ingredient", newIngredient)
+      .then(() => {
+        getIngredients();
+      })
+      .catch(error => setErrorStatus(error.response.status));
   }
 
   function deleteIngredient(id) {
@@ -36,6 +40,9 @@ export default function Ingredients() {
     <Grid container direction="column" alignItems="center">
       <h1>Ajouter un ingrédient</h1>
       <Grid item>
+        {errorStatus === 406 && (
+          <Typography>Nom de recette déjà existant</Typography>
+        )}
         <TextField
           style={{ width: "20rem" }}
           fullWidth
