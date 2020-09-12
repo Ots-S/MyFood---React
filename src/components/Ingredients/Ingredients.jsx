@@ -49,6 +49,7 @@ export default function Ingredients() {
           label="Entrez le nom d'un ingrédient"
           value={ingredient}
           onChange={onChange}
+          required
         />
       </Grid>
       <Grid item>

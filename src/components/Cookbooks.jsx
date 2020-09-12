@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Grid, TextField, Button, Box, Typography } from "@material-ui/core";
+import CookbookCard from "./CookbookCard";
 import axios from "axios";
 
 export default function Cookbooks() {
   const [name, setName] = useState("");
   const [cookbooks, setCookbooks] = useState([{}]);
   const [errorStatus, setErrorStatus] = useState();
+  const [recipes, setRecipes] = useState([{}]);
 
   useEffect(() => {
     getCookbooks();
+    getRecipes();
   }, []);
 
   function getCookbooks() {
@@ -34,25 +37,53 @@ export default function Cookbooks() {
       .catch(error => setErrorStatus(error.response.status));
   }
 
+  function getRecipes() {
+    axios.get("/recipes").then(responses => setRecipes(responses.data));
+  }
+
+  function addRecipeToCookbook(cookbookId, recipeId) {
+    axios
+      .post("/cookbooks/" + cookbookId + "/recipe/" + recipeId)
+      .then(() => getCookbooks());
+  }
+
+  function deleteRecipeFromCookbook(cookbookId, recipeId) {
+    axios
+      .delete("/cookbooks/" + cookbookId + "/recipe/" + recipeId)
+      .then(() => getCookbooks());
+  }
+
   return (
     <Grid container justify="center" alignItems="center" direction="column">
       <h1>Créer un livre de recettes</h1>
       {errorStatus === 406 && (
         <Typography>Ce livre de recettes existe déjà</Typography>
       )}
-      <TextField value={name} onChange={onChange} />
+      <TextField
+        style={{ width: "20rem" }}
+        value={name}
+        onChange={onChange}
+        label="Entrez le nom de votre livre de recettes"
+        required
+      />
       <Box my={2}>
         <Button onClick={createCookbook} variant="contained" color="primary">
           Créer
         </Button>
       </Box>
-      {cookbooks &&
-        cookbooks.map(cookbook => (
-          <Grid key={cookbook.id} container justify="center">
-            <Typography>{cookbook.name}</Typography>
-            <Button onClick={() => deleteCookbook(cookbook.id)}>X</Button>
-          </Grid>
-        ))}
+      <Grid item container>
+        {cookbooks &&
+          cookbooks.map(cookbook => (
+            <CookbookCard
+              key={cookbook.id}
+              cookbook={cookbook}
+              deleteCookbook={deleteCookbook}
+              addRecipeToCookbook={addRecipeToCookbook}
+              recipes={recipes}
+              deleteRecipeFromCookbook={deleteRecipeFromCookbook}
+            />
+          ))}
+      </Grid>
       {errorStatus === 304 && (
         <Typography>
           Erreur serveur - Le livre de recette n'a pas été supprimé

@@ -29,13 +29,6 @@ export default function RecipeCard({ recipe, deleteRecipe }) {
     <Box m={1}>
       <Card className={classes.root}>
         <CardContent>
-          <Typography
-            className={classes.title}
-            color="textSecondary"
-            gutterBottom
-          >
-            Recette
-          </Typography>
           <Typography variant="h5" component="h2">
             {recipe.name}
           </Typography>

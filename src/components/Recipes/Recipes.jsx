@@ -60,7 +60,9 @@ function Recipes(props) {
           <Typography>Nom de recette déjà existant</Typography>
         )}
         <TextField
+          style={{ width: "20rem" }}
           label="Nom de la recette"
+          fullwidth
           required
           value={recipeName}
           onChange={event => setRecipeName(event.target.value)}
