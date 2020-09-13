@@ -2,14 +2,27 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Grid, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 
 const useStyles = makeStyles({
   ingredientContainer: {
-    background: "lightgreen",
-    border: 1,
-    borderRadius: 3,
+    border: "1px solid lightgreen",
+    borderRadius: 10,
     margin: ".1em",
     padding: ".5em",
+    width: "10em",
+    height: "10em",
+  },
+  image: {
+    objectFit: "cover",
+    borderRadius: 10,
+    width: "8em",
+    height: "5em",
+  },
+  delete: {
+    "&:hover": {
+      color: "green",
+    },
   },
 });
 
@@ -18,15 +31,18 @@ export default function Ingredientcontainer({ ingredient, deleteIngredient }) {
   return (
     <Grid
       container
-      justify="space-between"
+      justify="center"
       alignItems="center"
-      item
-      xs={2}
       className={classes.ingredientContainer}
     >
-      <Typography>{ingredient.name}</Typography>
+      <Typography align="center">{ingredient.name}</Typography>
+      <img
+        src={ingredient.image}
+        className={classes.image}
+        alt={ingredient.name}
+      />
       <Button onClick={() => deleteIngredient(ingredient.id)}>
-        <Typography>X</Typography>
+        <DeleteOutlineIcon className={classes.delete} />
       </Button>
     </Grid>
   );
@@ -34,4 +50,5 @@ export default function Ingredientcontainer({ ingredient, deleteIngredient }) {
 
 Ingredientcontainer.propTypes = {
   ingredient: PropTypes.object.isRequired,
+  deleteIngredient: PropTypes.func.isRequired,
 };

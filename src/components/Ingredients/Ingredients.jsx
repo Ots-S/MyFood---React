@@ -7,6 +7,7 @@ export default function Ingredients() {
   const [ingredient, setIngredient] = useState("");
   const [ingredients, setIngredients] = useState([{}]);
   const [errorStatus, setErrorStatus] = useState();
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     getIngredients();
@@ -16,18 +17,24 @@ export default function Ingredients() {
     setIngredient(event.target.value);
   }
 
+  function onChangeImage(event) {
+    setImage(event.target.value);
+  }
+
   function getIngredients() {
     axios.get("/ingredients").then(response => setIngredients(response.data));
   }
 
-  function saveIngredient(ingredient) {
-    const newIngredient = { name: ingredient };
+  function saveIngredient(ingredient, image) {
+    const newIngredient = { name: ingredient, image: image };
     axios
       .post("/ingredient", newIngredient)
       .then(() => {
         getIngredients();
       })
       .catch(error => setErrorStatus(error.response.status));
+    setIngredient("");
+    setImage("");
   }
 
   function deleteIngredient(id) {
@@ -37,35 +44,51 @@ export default function Ingredients() {
   }
 
   return (
-    <Grid container direction="column" alignItems="center">
-      <h1>Ajouter un ingrédient</h1>
-      <Grid item>
-        {errorStatus === 406 && (
-          <Typography>Nom de recette déjà existant</Typography>
-        )}
-        <TextField
-          style={{ width: "20rem" }}
-          fullWidth
-          label="Entrez le nom d'un ingrédient"
-          value={ingredient}
-          onChange={onChange}
-          required
-        />
+    <Grid
+      container
+      direction="column"
+      justify="space-around"
+      alignItems="center"
+      style={{ height: "100vh" }}
+    >
+      <Typography variant="h4">Ajouter un ingrédient</Typography>
+      <Grid item container alignItems="center" direction="column">
+        <Grid container direction="column" alignItems="center" item>
+          {errorStatus === 406 && (
+            <Typography>Nom de recette déjà existant</Typography>
+          )}
+          <TextField
+            style={{ width: "20rem" }}
+            fullWidth
+            label="Entrez le nom d'un ingrédient"
+            value={ingredient}
+            onChange={onChange}
+            required
+          />
+          <TextField
+            style={{ width: "20rem" }}
+            fullWidth
+            label="Entrez le lien d'une image"
+            value={image}
+            onChange={onChangeImage}
+            required
+          />
+        </Grid>
+        <Grid item>
+          <Box my={2}>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => saveIngredient(ingredient, image)}
+            >
+              Ajouter
+            </Button>
+          </Box>
+        </Grid>
       </Grid>
-      <Grid item>
-        <Box my={2}>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => saveIngredient(ingredient)}
-          >
-            Ajouter
-          </Button>
-        </Box>
-      </Grid>
-      <Grid container justify="center">
+      <Grid item container justify="center">
         {ingredients && (
-          <Grid container justify="center" item xs={6}>
+          <Grid container justify="center" item xs={12}>
             {ingredients.map((ingredient, i) => (
               <IngredientContainer
                 key={i}
