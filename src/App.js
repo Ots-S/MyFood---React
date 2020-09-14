@@ -8,11 +8,11 @@ import Cookbooks from "./components/Cookbooks";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   container: {
     display: "flex",
   },
-});
+}));
 
 export default function App() {
   const classes = useStyles();

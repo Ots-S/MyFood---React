@@ -25,7 +25,7 @@ export default function Ingredients() {
     axios.get("/ingredients").then(response => setIngredients(response.data));
   }
 
-  function saveIngredient(ingredient, image) {
+  function saveIngredient() {
     const newIngredient = { name: ingredient, image: image };
     axios
       .post("/ingredient", newIngredient)
@@ -79,7 +79,7 @@ export default function Ingredients() {
             <Button
               color="primary"
               variant="contained"
-              onClick={() => saveIngredient(ingredient, image)}
+              onClick={() => saveIngredient()}
             >
               Ajouter
             </Button>

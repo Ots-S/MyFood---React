@@ -18,15 +18,18 @@ const useStyles = makeStyles({
   title: {
     fontSize: 14,
   },
-  pos: {
-    marginBottom: 12,
+
+  image: {
+    width: "10rem",
+    height: "10rem",
+    objectFit: "cover",
   },
 });
 
 export default function RecipeCard({ recipe, deleteRecipe }) {
   const classes = useStyles();
   return (
-    <Box m={1}>
+    <Box mx={1}>
       <Card className={classes.root}>
         <CardContent>
           <Typography variant="h5" component="h2">
@@ -35,6 +38,7 @@ export default function RecipeCard({ recipe, deleteRecipe }) {
           {recipe.ingredients.map(ingredient => (
             <Typography>{ingredient.name}</Typography>
           ))}
+          <img src={recipe.image} alt={recipe.name} className={classes.image} />
         </CardContent>
         <CardActions>
           <Button size="small" onClick={() => deleteRecipe(recipe.id)}>
