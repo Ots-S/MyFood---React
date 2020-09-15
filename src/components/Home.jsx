@@ -35,7 +35,9 @@ export default function Home() {
         lg={4}
         className={classes.content}
       >
-        <Typography variant="h2">MyFood</Typography>
+        <Typography variant="h2" color="secondary">
+          MyFood
+        </Typography>
       </Grid>
     </Grid>
   );
