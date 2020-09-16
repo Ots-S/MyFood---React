@@ -3,7 +3,7 @@ import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import homeImage from "../assets/photo-1566385101042-1a0aa0c1268c.jpg";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   container: {
     backgroundImage: `url(${homeImage})`,
     height: "100vh",
@@ -12,10 +12,10 @@ const useStyles = makeStyles({
   },
   content: {
     backgroundColor: "white",
-    height: "50%",
     borderRadius: 20,
+    [theme.breakpoints.up("sm")]: { height: "50%" },
   },
-});
+}));
 
 export default function Home() {
   const classes = useStyles();
@@ -35,7 +35,7 @@ export default function Home() {
         lg={4}
         className={classes.content}
       >
-        <Typography variant="h2" color="secondary">
+        <Typography variant="h2" style={{ color: "green" }}>
           MyFood
         </Typography>
       </Grid>

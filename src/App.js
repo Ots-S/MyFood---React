@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import Home from "./components/Home";
-import Drawer from "./components/Drawer";
+import ResponsiveDrawer from "./components/ResponsiveDrawer";
 import Ingredients from "./components/Ingredients/Ingredients";
 import Recipes from "./components/Recipes/Recipes";
 import Cookbooks from "./components/Cookbooks";
@@ -19,7 +19,7 @@ export default function App() {
   return (
     <div className={classes.container}>
       <Router>
-        <Drawer />
+        <ResponsiveDrawer />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/ingredients" component={Ingredients} />
