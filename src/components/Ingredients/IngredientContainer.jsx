@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Ingredientcontainer({ ingredient, deleteIngredient }) {
+export default function IngredientContainer({ ingredient, deleteIngredient }) {
   const classes = useStyles();
   return (
     <Grid
@@ -48,7 +48,7 @@ export default function Ingredientcontainer({ ingredient, deleteIngredient }) {
   );
 }
 
-Ingredientcontainer.propTypes = {
+IngredientContainer.propTypes = {
   ingredient: PropTypes.object.isRequired,
   deleteIngredient: PropTypes.func.isRequired,
 };

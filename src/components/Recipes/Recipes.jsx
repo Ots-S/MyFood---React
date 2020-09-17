@@ -60,9 +60,8 @@ function Recipes(props) {
       justify="space-between"
       alignItems="center"
       direction="column"
-      style={{ height: "100vh" }}
+      style={{}}
     >
-      <Typography variant="h4">Créer une recette</Typography>
       <Grid container direction="column" justify="center" alignItems="center">
         <Grid container item direction="column" alignItems="center">
           {errorStatus === 406 && (

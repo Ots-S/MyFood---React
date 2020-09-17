@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -72,7 +73,9 @@ export default function CookbookCard({
             style={{ width: "20rem" }}
           >
             {recipes.map(recipe => (
-              <MenuItem value={recipe}>{recipe.name}</MenuItem>
+              <MenuItem key={recipe.id} value={recipe}>
+                {recipe.name}
+              </MenuItem>
             ))}
           </Select>
           <CardActions>
@@ -91,8 +94,8 @@ export default function CookbookCard({
         </CardActions>
         {cookbook.recipes &&
           cookbook.recipes.map(recipe => (
-            <Grid item container>
-              <Typography key={recipe.id}>{recipe.name}</Typography>
+            <Grid key={recipe.id} item container>
+              <Typography>{recipe.name}</Typography>
               <Button
                 onClick={() => deleteRecipeFromCookbook(cookbook.id, recipe.id)}
               >
@@ -104,3 +107,11 @@ export default function CookbookCard({
     </Box>
   );
 }
+
+CookbookCard.propTypes = {
+  cookbook: PropTypes.object.isRequired,
+  deleteCookbook: PropTypes.func.isRequired,
+  recipes: PropTypes.array.isRequired,
+  addRecipeToCookbook: PropTypes.func.isRequired,
+  deleteRecipeFromCookbook: PropTypes.func.isRequired,
+};

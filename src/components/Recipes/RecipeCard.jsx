@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -18,7 +19,6 @@ const useStyles = makeStyles({
   title: {
     fontSize: 14,
   },
-
   image: {
     width: "10rem",
     height: "10rem",
@@ -49,3 +49,8 @@ export default function RecipeCard({ recipe, deleteRecipe }) {
     </Box>
   );
 }
+
+RecipeCard.propTypes = {
+  recipe: PropTypes.object.isRequired,
+  deleteRecipe: PropTypes.func.isRequired,
+};

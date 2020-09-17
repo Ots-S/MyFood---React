@@ -71,7 +71,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function ResponsiveDrawer() {
+export default function ResponsiveDrawer() {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -92,11 +92,16 @@ function ResponsiveDrawer() {
   }
 
   const itemsList = [
-    { name: "Home", path: "/", icon: <HomeIcon /> },
-    { name: "Ingrédients", path: "/ingredients", icon: <AppleIcon /> },
-    { name: "Recettes", path: "/recipes", icon: <ListAltIcon /> },
-    { name: "Livre de Recettes", path: "/cookbooks", icon: <MenuBookIcon /> },
-    { name: "Profil", path: "/user", icon: <AccountCircleIcon /> },
+    { id: 1, name: "Home", path: "/", icon: <HomeIcon /> },
+    { id: 2, name: "Ingrédients", path: "/ingredients", icon: <AppleIcon /> },
+    { id: 3, name: "Recettes", path: "/recipes", icon: <ListAltIcon /> },
+    {
+      id: 4,
+      name: "Livre de Recettes",
+      path: "/cookbooks",
+      icon: <MenuBookIcon />,
+    },
+    { id: 5, name: "Profil", path: "/user", icon: <AccountCircleIcon /> },
   ];
 
   const handleDrawerToggle = () => {
@@ -108,10 +113,12 @@ function ResponsiveDrawer() {
       <div className={classes.toolbar} />
       <List className={classes.list}>
         {itemsList.map(item => (
-          <Box my={1}>
-            <ListItem button key={item.name} onClick={() => goToLink(item)}>
+          <Box key={item.id} my={1}>
+            <ListItem button onClick={() => goToLink(item)}>
               <ListItemIcon
-                className={itemSelected === item.name && classes.selectedIcon}
+                className={
+                  itemSelected === item.name ? classes.selectedIcon : ""
+                }
               >
                 {item.icon}
               </ListItemIcon>
@@ -169,13 +176,3 @@ function ResponsiveDrawer() {
     </div>
   );
 }
-
-ResponsiveDrawer.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
-
-export default ResponsiveDrawer;

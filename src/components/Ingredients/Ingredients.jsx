@@ -51,7 +51,6 @@ export default function Ingredients() {
       alignItems="center"
       style={{ height: "100vh" }}
     >
-      <Typography variant="h4">Ajouter un ingrédient</Typography>
       <Grid item container alignItems="center" direction="column">
         <Grid container direction="column" alignItems="center" item>
           {errorStatus === 406 && (

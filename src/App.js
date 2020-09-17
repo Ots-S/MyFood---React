@@ -4,7 +4,7 @@ import Home from "./components/Home";
 import ResponsiveDrawer from "./components/ResponsiveDrawer";
 import Ingredients from "./components/Ingredients/Ingredients";
 import Recipes from "./components/Recipes/Recipes";
-import Cookbooks from "./components/Cookbooks";
+import Cookbooks from "./components/Cookbooks/Cookbooks";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 

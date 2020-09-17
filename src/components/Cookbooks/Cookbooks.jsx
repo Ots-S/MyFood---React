@@ -54,8 +54,13 @@ export default function Cookbooks() {
   }
 
   return (
-    <Grid container justify="center" alignItems="center" direction="column">
-      <h1>Créer un livre de recettes</h1>
+    <Grid
+      container
+      justify="space-around"
+      alignItems="center"
+      direction="column"
+      style={{ height: "100vh" }}
+    >
       {errorStatus === 406 && (
         <Typography>Ce livre de recettes existe déjà</Typography>
       )}
