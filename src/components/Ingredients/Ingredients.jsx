@@ -1,13 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { Grid, TextField, Button, Box, Typography } from "@material-ui/core";
+import {
+  Grid,
+  TextField,
+  Button,
+  Box,
+  Typography,
+  CircularProgress,
+} from "@material-ui/core";
 import axios from "axios";
 import IngredientContainer from "./IngredientContainer";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  container: {
+    height: "100vh",
+  },
+});
 
 export default function Ingredients() {
   const [ingredient, setIngredient] = useState("");
-  const [ingredients, setIngredients] = useState([{}]);
-  const [errorStatus, setErrorStatus] = useState();
+  const [ingredients, setIngredients] = useState();
+  const [postError, setPostError] = useState();
   const [image, setImage] = useState("");
+  const [getError, setGetError] = useState("");
+  const classes = useStyles();
 
   useEffect(() => {
     getIngredients();
@@ -22,7 +38,14 @@ export default function Ingredients() {
   }
 
   function getIngredients() {
-    axios.get("/ingredients").then(response => setIngredients(response.data));
+    axios
+      .get("/ingredients")
+      .then(response => setIngredients(response.data))
+      .catch(() =>
+        setGetError(
+          "Erreur serveur - Impossible de récupérer la liste des ingrédients, veuillez réessayer plus tard."
+        )
+      );
   }
 
   function saveIngredient() {
@@ -32,7 +55,15 @@ export default function Ingredients() {
       .then(() => {
         getIngredients();
       })
-      .catch(error => setErrorStatus(error.response.status));
+      .catch(error =>
+        error.response.status === 406
+          ? setPostError(
+              "Nom de recette déjà existant, veuillez en choisir un autre"
+            )
+          : setPostError(
+              "Erreur serveur - Impossible d'enregister l'ingrédient, veuillez réessayer plus tard."
+            )
+      );
     setIngredient("");
     setImage("");
   }
@@ -49,13 +80,11 @@ export default function Ingredients() {
       direction="column"
       justify="space-around"
       alignItems="center"
-      style={{ height: "100vh" }}
+      className={classes.container}
     >
       <Grid item container alignItems="center" direction="column">
         <Grid container direction="column" alignItems="center" item>
-          {errorStatus === 406 && (
-            <Typography>Nom de recette déjà existant</Typography>
-          )}
+          {postError && <Typography>{postError}</Typography>}
           <TextField
             style={{ width: "20rem" }}
             fullWidth
@@ -86,7 +115,7 @@ export default function Ingredients() {
         </Grid>
       </Grid>
       <Grid item container justify="center">
-        {ingredients && (
+        {ingredients ? (
           <Grid container justify="center" item xs={12}>
             {ingredients.map((ingredient, i) => (
               <IngredientContainer
@@ -96,7 +125,12 @@ export default function Ingredients() {
               />
             ))}
           </Grid>
+        ) : (
+          !getError && <CircularProgress color="primary" />
         )}
+        <Grid item>
+          {getError && <Typography align="center">{getError}</Typography>}
+        </Grid>
       </Grid>
     </Grid>
   );

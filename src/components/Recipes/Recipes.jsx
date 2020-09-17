@@ -1,18 +1,36 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { Grid, TextField, Box, Button, Typography } from "@material-ui/core";
+import {
+  Grid,
+  TextField,
+  Box,
+  Button,
+  Typography,
+  CircularProgress,
+} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from "axios";
 import RecipeCard from "./RecipeCard";
+import { makeStyles } from "@material-ui/styles";
 
-function Recipes(props) {
+const useStyles = makeStyles({
+  container: {
+    height: "100vh",
+  },
+  button: {
+    color: "green",
+  },
+});
+
+function Recipes() {
   const [ingredients, setIngredients] = useState([]);
   const [ingredient, setIngredient] = useState();
   const [recipeIngredients, setRecipeIngredients] = useState([]);
   const [recipeName, setRecipeName] = useState("");
-  const [recipes, setRecipes] = useState([]);
-  const [errorStatus, setErrorStatus] = useState();
+  const [recipes, setRecipes] = useState();
+  const [getError, setGetError] = useState();
+  const [postError, setPostError] = useState();
   const [image, setImage] = useState("");
+  const classes = useStyles();
 
   useEffect(() => {
     getIngredients();
@@ -43,7 +61,7 @@ function Recipes(props) {
     axios
       .post("/recipe", recipe)
       .then(() => getRecipes())
-      .catch(error => setErrorStatus(error.response.status));
+      .catch(error => setPostError(error.response.status));
   }
 
   function deleteRecipe(id) {
@@ -51,20 +69,27 @@ function Recipes(props) {
   }
 
   function getRecipes() {
-    axios.get("/recipes").then(responses => setRecipes(responses.data));
+    axios
+      .get("/recipes")
+      .then(responses => setRecipes(responses.data))
+      .catch(() =>
+        setGetError(
+          "Erreur serveur - Impossible de récupérer la liste des ingrédients, veuillez réessayer plus tard."
+        )
+      );
   }
 
   return (
     <Grid
       container
-      justify="space-between"
+      justify="space-around"
       alignItems="center"
       direction="column"
-      style={{}}
+      className={classes.container}
     >
       <Grid container direction="column" justify="center" alignItems="center">
         <Grid container item direction="column" alignItems="center">
-          {errorStatus === 406 && (
+          {postError === 406 && (
             <Typography>Nom de recette déjà existant</Typography>
           )}
           <TextField
@@ -123,22 +148,24 @@ function Recipes(props) {
         )}
         <Button
           variant="contained"
-          color="primary"
           onClick={() => saveRecipe()}
           disabled={!recipeName || !recipeIngredients.length > 0}
+          className={classes.button}
         >
           Enregistrer la recette
         </Button>
       </Grid>
-      <Grid item container>
-        {recipes &&
-          recipes.map(recipe => (
-            <RecipeCard
-              key={recipe.id}
-              recipe={recipe}
-              deleteRecipe={deleteRecipe}
-            />
-          ))}
+      <Grid item container justify="center">
+        {recipes
+          ? recipes.map(recipe => (
+              <RecipeCard
+                key={recipe.id}
+                recipe={recipe}
+                deleteRecipe={deleteRecipe}
+              />
+            ))
+          : !getError && <CircularProgress />}
+        {getError && <Typography align="center">{getError}</Typography>}
       </Grid>
     </Grid>
   );

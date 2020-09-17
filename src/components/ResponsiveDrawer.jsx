@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import {
   AppBar,
   Box,
@@ -14,7 +13,7 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import HomeIcon from "@material-ui/icons/Home";
@@ -73,23 +72,9 @@ const useStyles = makeStyles(theme => ({
 
 export default function ResponsiveDrawer() {
   const classes = useStyles();
-  const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [itemSelected, setItemSelected] = useState();
   let history = useHistory();
-
-  useEffect(() => {
-    itemsList.forEach(
-      item =>
-        item.path === window.location.pathname && setItemSelected(item.name)
-    );
-  }, []);
-
-  function goToLink(item) {
-    history.push(item.path);
-    setMobileOpen(false);
-    setItemSelected(item.name);
-  }
 
   const itemsList = [
     { id: 1, name: "Home", path: "/", icon: <HomeIcon /> },
@@ -103,6 +88,19 @@ export default function ResponsiveDrawer() {
     },
     { id: 5, name: "Profil", path: "/user", icon: <AccountCircleIcon /> },
   ];
+
+  useEffect(() => {
+    itemsList.forEach(
+      item =>
+        item.path === window.location.pathname && setItemSelected(item.name)
+    );
+  }, []);
+
+  function goToLink(item) {
+    history.push(item.path);
+    setMobileOpen(false);
+    setItemSelected(item.name);
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

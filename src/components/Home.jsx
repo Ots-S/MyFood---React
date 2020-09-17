@@ -35,7 +35,7 @@ export default function Home() {
         lg={4}
         className={classes.content}
       >
-        <Typography variant="h2" style={{ color: "green" }}>
+        <Typography color="primary" variant="h2">
           MyFood
         </Typography>
       </Grid>

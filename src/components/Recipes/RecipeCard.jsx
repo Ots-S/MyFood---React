@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import { Button, Typography, Grid, Box } from "@material-ui/core";
+import { Button, Typography, Box } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
