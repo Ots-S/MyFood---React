@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import { Button, Typography, Box } from "@material-ui/core";
+import { Grid, Button, Typography, Box } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
@@ -41,9 +41,15 @@ export default function RecipeCard({ recipe, deleteRecipe }) {
           <img src={recipe.image} alt={recipe.name} className={classes.image} />
         </CardContent>
         <CardActions>
-          <Button size="small" onClick={() => deleteRecipe(recipe.id)}>
-            Supprimer
-          </Button>
+          <Grid container jusitify="center">
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => deleteRecipe(recipe.id)}
+            >
+              Supprimer
+            </Button>
+          </Grid>
         </CardActions>
       </Card>
     </Box>

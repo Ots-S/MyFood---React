@@ -4,7 +4,7 @@ import { green } from "@material-ui/core/colors";
 export default createMuiTheme({
   palette: {
     primary: {
-      main: green[500],
+      main: green[800],
       contrastText: "white",
     },
   },
@@ -12,8 +12,8 @@ export default createMuiTheme({
     MuiButton: {
       root: {
         fontSize: "1rem",
-        color: "white",
-        bakgroundColor: "green",
+        color: green[800],
+        backgroundColor: green,
         textPrimary: "white",
       },
     },

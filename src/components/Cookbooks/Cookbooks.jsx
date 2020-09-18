@@ -51,15 +51,7 @@ export default function Cookbooks() {
     axios
       .post("/cookbooks", newCookbook)
       .then(() => getCookbooks())
-      .catch(error =>
-        error.response.status === 406
-          ? setPostError(
-              "Le nom du livre de recette existe déjà, veuillez choisir un autre nom"
-            )
-          : setPostError(
-              "Erreur serveur - Impossible d'enregistrer , veuillez réessayer plus tard."
-            )
-      );
+      .catch(error => setPostError(error.response.status));
   }
 
   function deleteCookbook(id) {
@@ -90,6 +82,17 @@ export default function Cookbooks() {
       .then(() => getCookbooks());
   }
 
+  function describeError(error) {
+    switch (error) {
+      case 406:
+        return "Ce nom existe déjà, veuillez en choisir un autre";
+      case 500:
+        return "Erreur serveur - Impossible d'enregister le livre de recettes";
+      default:
+        return "";
+    }
+  }
+
   return (
     <Grid
       container
@@ -98,8 +101,9 @@ export default function Cookbooks() {
       direction="column"
       className={classes.container}
     >
-      {postError && <Typography>{postError}</Typography>}
       <TextField
+        error={postError}
+        helperText={describeError(postError)}
         style={{ width: "20rem" }}
         value={name}
         onChange={onChange}

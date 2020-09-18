@@ -1,23 +1,26 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Grid, Typography, Button } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Button,
+  Card,
+  CardMedia,
+  CardActions,
+  CardContent,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 
 const useStyles = makeStyles({
   ingredientContainer: {
-    border: "1px solid lightgreen",
-    borderRadius: 10,
     margin: ".1em",
     padding: ".5em",
-    width: "10em",
-    height: "10em",
   },
   image: {
-    objectFit: "cover",
     borderRadius: 10,
-    width: "8em",
-    height: "5em",
+    height: "5rem",
+    objectFit: "cover",
   },
   delete: {
     "&:hover": {
@@ -29,22 +32,24 @@ const useStyles = makeStyles({
 export default function IngredientContainer({ ingredient, deleteIngredient }) {
   const classes = useStyles();
   return (
-    <Grid
-      container
-      justify="center"
-      alignItems="center"
-      className={classes.ingredientContainer}
-    >
-      <Typography align="center">{ingredient.name}</Typography>
-      <img
+    <Card className={classes.ingredientContainer}>
+      <Grid container justify="center">
+        <CardContent>
+          <Typography>{ingredient.name.toUpperCase()}</Typography>
+        </CardContent>
+      </Grid>
+      <CardMedia
+        component="img"
         src={ingredient.image}
         className={classes.image}
-        alt={ingredient.name}
+        title={ingredient.name}
       />
-      <Button onClick={() => deleteIngredient(ingredient.id)}>
-        <DeleteOutlineIcon className={classes.delete} />
-      </Button>
-    </Grid>
+      <CardActions>
+        <Button onClick={() => deleteIngredient(ingredient.id)}>
+          <DeleteOutlineIcon className={classes.delete} />
+        </Button>
+      </CardActions>
+    </Card>
   );
 }
 

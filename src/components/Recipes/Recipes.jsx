@@ -14,7 +14,7 @@ import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles({
   container: {
-    height: "100vh",
+    marginTop: "5rem",
   },
   button: {
     color: "green",
@@ -79,6 +79,17 @@ function Recipes() {
       );
   }
 
+  function describeError(error) {
+    switch (error) {
+      case 406:
+        return "Ce nom existe déjà, veuillez en choisir un autre";
+      case 500:
+        return "Erreur serveur - Impossible d'enregister la recette";
+      default:
+        return "";
+    }
+  }
+
   return (
     <Grid
       container
@@ -89,10 +100,9 @@ function Recipes() {
     >
       <Grid container direction="column" justify="center" alignItems="center">
         <Grid container item direction="column" alignItems="center">
-          {postError === 406 && (
-            <Typography>Nom de recette déjà existant</Typography>
-          )}
           <TextField
+            error={postError}
+            helperText={describeError(postError)}
             style={{ width: "20rem" }}
             label="Nom de la recette"
             fullwidth

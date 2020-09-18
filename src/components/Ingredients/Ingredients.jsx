@@ -8,20 +8,18 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import axios from "axios";
-import IngredientContainer from "./IngredientContainer";
+import IngredientCard from "./IngredientCard";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
-  container: {
-    height: "100vh",
-  },
+  container: { marginTop: "5rem" },
 });
 
 export default function Ingredients() {
-  const [ingredient, setIngredient] = useState("");
+  const [ingredient, setIngredient] = useState();
   const [ingredients, setIngredients] = useState();
   const [postError, setPostError] = useState();
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState();
   const [getError, setGetError] = useState("");
   const classes = useStyles();
 
@@ -55,15 +53,7 @@ export default function Ingredients() {
       .then(() => {
         getIngredients();
       })
-      .catch(error =>
-        error.response.status === 406
-          ? setPostError(
-              "Nom de recette déjà existant, veuillez en choisir un autre"
-            )
-          : setPostError(
-              "Erreur serveur - Impossible d'enregister l'ingrédient, veuillez réessayer plus tard."
-            )
-      );
+      .catch(error => setPostError(error.response.status));
     setIngredient("");
     setImage("");
   }
@@ -74,63 +64,69 @@ export default function Ingredients() {
     });
   }
 
+  function describeError(error) {
+    switch (error) {
+      case 406:
+        return "Ce nom existe déjà, veuillez en choisir un autre";
+      case 500:
+        return "Erreur serveur - Impossible d'enregister l'ingrédient";
+      default:
+        return "";
+    }
+  }
+
   return (
     <Grid
       container
       direction="column"
-      justify="space-around"
       alignItems="center"
       className={classes.container}
     >
-      <Grid item container alignItems="center" direction="column">
-        <Grid container direction="column" alignItems="center" item>
-          {postError && <Typography>{postError}</Typography>}
-          <TextField
-            style={{ width: "20rem" }}
-            fullWidth
-            label="Entrez le nom d'un ingrédient"
-            value={ingredient}
-            onChange={onChange}
-            required
-          />
-          <TextField
-            style={{ width: "20rem" }}
-            fullWidth
-            label="Entrez le lien d'une image"
-            value={image}
-            onChange={onChangeImage}
-            required
-          />
-        </Grid>
-        <Grid item>
-          <Box my={2}>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={() => saveIngredient()}
-            >
-              Ajouter
-            </Button>
-          </Box>
-        </Grid>
+      <Grid item xs={10}>
+        <TextField
+          error={postError}
+          helperText={postError && describeError(postError)}
+          fullWidth
+          label="Entrez le nom d'un ingrédient"
+          value={ingredient}
+          onChange={onChange}
+          required
+        />
+        <TextField
+          fullWidth
+          label="Entrez le lien d'une image"
+          value={image}
+          onChange={onChangeImage}
+          required
+        />
       </Grid>
-      <Grid item container justify="center">
-        {ingredients ? (
-          <Grid container justify="center" item xs={12}>
-            {ingredients.map((ingredient, i) => (
-              <IngredientContainer
+      <Box my={2}>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => saveIngredient()}
+          disabled={!image || !ingredient}
+        >
+          Ajouter
+        </Button>
+      </Box>
+      {ingredients ? (
+        <Grid space-around container justify="center" spacing={1} item xs={11}>
+          {ingredients.map((ingredient, i) => (
+            <Grid item xs={4} md={2}>
+              <IngredientCard
                 key={i}
                 ingredient={ingredient}
                 deleteIngredient={deleteIngredient}
               />
-            ))}
-          </Grid>
-        ) : (
-          !getError && <CircularProgress color="primary" />
-        )}
-        <Grid item>
-          {getError && <Typography align="center">{getError}</Typography>}
+            </Grid>
+          ))}
         </Grid>
+      ) : (
+        !getError && <CircularProgress color="primary" />
+      )}
+      <Grid item>
+        {getError && <Typography align="center">{getError}</Typography>}
       </Grid>
     </Grid>
   );

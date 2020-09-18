@@ -11,6 +11,7 @@ import {
   Toolbar,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/core/styles";
@@ -39,7 +40,7 @@ const useStyles = makeStyles(theme => ({
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },
-    backgroundColor: "transparent",
+    //backgroundColor: "transparent",
   },
   whiteMenuButton: {
     marginRight: theme.spacing(2),
@@ -52,7 +53,6 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up("sm")]: {
       display: "none",
     },
-    color: "green",
   },
   selectedIcon: {
     color: "green",
@@ -86,7 +86,7 @@ export default function ResponsiveDrawer() {
       path: "/cookbooks",
       icon: <MenuBookIcon />,
     },
-    { id: 5, name: "Profil", path: "/user", icon: <AccountCircleIcon /> },
+    { id: 5, name: "Profil", path: "/profile", icon: <AccountCircleIcon /> },
   ];
 
   useEffect(() => {
@@ -131,8 +131,8 @@ export default function ResponsiveDrawer() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar} elevation={0}>
-        <Toolbar className={classes.toolbar}>
+      <AppBar position="fixed" className={classes.appBar} elevation={1}>
+        <Toolbar position="fixed" className={classes.toolbar}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -146,6 +146,9 @@ export default function ResponsiveDrawer() {
           >
             <MenuIcon />
           </IconButton>
+          <Typography variant="h6" noWrap>
+            MyFood
+          </Typography>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="links">
