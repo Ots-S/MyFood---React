@@ -1,58 +1,84 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import { Grid, Button, Typography, Box } from "@material-ui/core";
+import {
+  Grid,
+  Button,
+  Typography,
+  Card,
+  CardActions,
+  CardMedia,
+  CardContent,
+} from "@material-ui/core";
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
+import PopUp from "../PopUp";
+import DeleteConfirmationPopUp from "../DeleteConfirmationPopUp";
 
 const useStyles = makeStyles({
   root: {
     width: 275,
     height: 300,
   },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
   title: {
     fontSize: 14,
   },
   image: {
-    width: "10rem",
-    height: "10rem",
     objectFit: "cover",
   },
 });
 
 export default function RecipeCard({ recipe, deleteRecipe }) {
   const classes = useStyles();
+  const [openModal, setOpenModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+  function openIngredientsPopUp() {
+    setOpenModal(prevState => !prevState);
+  }
+  function openDeletePopUp() {
+    setOpenDeleteModal(prevState => !prevState);
+  }
+
   return (
-    <Box mx={1}>
-      <Card className={classes.root}>
+    <Card className={classes.root}>
+      <Grid container justify="center">
         <CardContent>
-          <Typography variant="h5" component="h2">
+          <Typography color="primary" variant="h5" component="h2">
             {recipe.name}
           </Typography>
-          {recipe.ingredients.map(ingredient => (
-            <Typography>{ingredient.name}</Typography>
-          ))}
-          <img src={recipe.image} alt={recipe.name} className={classes.image} />
+          <CardMedia
+            component="img"
+            src={recipe.image}
+            className={classes.image}
+            title={recipe.name}
+          />
         </CardContent>
         <CardActions>
-          <Grid container jusitify="center">
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={() => deleteRecipe(recipe.id)}
-            >
-              Supprimer
-            </Button>
-          </Grid>
+          <Button color="primary" onClick={openIngredientsPopUp}>
+            <FormatListBulletedIcon />
+          </Button>
+          <Button color="primary" onClick={openDeletePopUp}>
+            <DeleteOutlineIcon />
+          </Button>
         </CardActions>
-      </Card>
-    </Box>
+      </Grid>
+      {openModal && (
+        <PopUp
+          open={openModal}
+          items={recipe.ingredients}
+          handleOpen={openIngredientsPopUp}
+        />
+      )}
+      {openDeleteModal && (
+        <DeleteConfirmationPopUp
+          open={openDeleteModal}
+          handleOpen={openDeletePopUp}
+          item={recipe}
+          deleteElement={deleteRecipe}
+        />
+      )}
+    </Card>
   );
 }
 

@@ -90,11 +90,15 @@ export default function ResponsiveDrawer() {
   ];
 
   useEffect(() => {
+    highlightSelectedLink();
+  }, []);
+
+  function highlightSelectedLink() {
     itemsList.forEach(
       item =>
         item.path === window.location.pathname && setItemSelected(item.name)
     );
-  }, []);
+  }
 
   function goToLink(item) {
     history.push(item.path);
