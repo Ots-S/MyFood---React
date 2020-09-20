@@ -38,7 +38,9 @@ export default function IngredientContainer({ ingredient, deleteIngredient }) {
     <Card className={classes.ingredientContainer}>
       <Grid container justify="center">
         <CardContent>
-          <Typography>{ingredient.name.toUpperCase()}</Typography>
+          <Typography color="primary">
+            {ingredient.name.toUpperCase()}
+          </Typography>
         </CardContent>
         <CardMedia
           component="img"

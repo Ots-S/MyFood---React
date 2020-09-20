@@ -86,11 +86,7 @@ function Recipes() {
     axios
       .get("/recipes")
       .then(responses => setRecipes(responses.data))
-      .catch(() =>
-        setGetError(
-          "Erreur serveur - Impossible de récupérer la liste des ingrédients, veuillez réessayer plus tard."
-        )
-      );
+      .catch(error => setGetError(error.response.status));
   }
 
   function describeError(error) {
@@ -98,7 +94,7 @@ function Recipes() {
       case 406:
         return "Ce nom existe déjà, veuillez en choisir un autre";
       case 500:
-        return "Erreur serveur - Impossible d'enregister la recette";
+        return "Erreur serveur - Impossible d'afficher ou d'envoyer des données, veuillez réessayer plus tard.";
       default:
         return "";
     }
@@ -118,7 +114,7 @@ function Recipes() {
       alignItems="center"
       className={classes.container}
     >
-      <Grid item xs={10}>
+      <Grid container item xs={10} sm={8} md={6} lg={3}>
         <TextField
           fullWidth
           required
@@ -165,7 +161,7 @@ function Recipes() {
         </Box>
       </Grid>
       {recipeIngredients.length > 0 && (
-        <Grid container item xs={10}>
+        <Grid container spacing={1} item xs={11} md={10} lg={6}>
           {recipeIngredients.map(ingredient => (
             <Grid item>
               <Button
@@ -188,17 +184,26 @@ function Recipes() {
       >
         Enregistrer la recette
       </Button>
-      <Grid item container justify="center">
-        {recipes
-          ? recipes.map(recipe => (
+
+      {recipes ? (
+        <Grid container spacing={1} item xs={11} md={10} lg={6}>
+          {recipes.map(recipe => (
+            <Grid item lg={6}>
               <RecipeCard
                 key={recipe.id}
                 recipe={recipe}
                 deleteRecipe={deleteRecipe}
               />
-            ))
-          : !getError && <CircularProgress />}
-        {getError && <Typography align="center">{getError}</Typography>}
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Box mt={25}>{!getError && <CircularProgress color="primary" />}</Box>
+      )}
+      <Grid item>
+        {getError && (
+          <Typography align="center">{describeError(getError)}</Typography>
+        )}
       </Grid>
     </Grid>
   );

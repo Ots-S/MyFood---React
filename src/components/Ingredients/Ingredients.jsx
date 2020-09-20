@@ -98,7 +98,7 @@ export default function Ingredients() {
       alignItems="center"
       className={classes.container}
     >
-      <Grid item xs={10}>
+      <Grid container item xs={10} sm={8} md={6} lg={3}>
         <TextField
           fullWidth
           required
@@ -132,15 +132,7 @@ export default function Ingredients() {
         </Button>
       </Box>
       {ingredients ? (
-        <Grid
-          container
-          justify="center"
-          spacing={1}
-          item
-          xs={11}
-          md={10}
-          lg={6}
-        >
+        <Grid container spacing={1} item xs={11} md={10} lg={6}>
           {ingredients.map((ingredient, i) => (
             <Grid item xs={4} md={4} lg={3} key={ingredient.id}>
               <IngredientCard
@@ -152,7 +144,7 @@ export default function Ingredients() {
           ))}
         </Grid>
       ) : (
-        !getError && <CircularProgress color="primary" />
+        <Box mt={25}>{!getError && <CircularProgress color="primary" />}</Box>
       )}
       <Grid item>
         {getError && (

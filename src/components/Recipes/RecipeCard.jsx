@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Grid,
   Button,
-  Typography,
   Card,
   CardActions,
   CardMedia,
   CardContent,
+  Grid,
+  Typography,
 } from "@material-ui/core";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
@@ -16,14 +16,14 @@ import PopUp from "../PopUp";
 import DeleteConfirmationPopUp from "../DeleteConfirmationPopUp";
 
 const useStyles = makeStyles({
-  root: {
-    width: 275,
-    height: 300,
-  },
+  root: { width: "100%" },
   title: {
     fontSize: 14,
   },
   image: {
+    borderRadius: 10,
+    height: "5rem",
+
     objectFit: "cover",
   },
 });
@@ -36,15 +36,21 @@ export default function RecipeCard({ recipe, deleteRecipe }) {
   function openIngredientsPopUp() {
     setOpenModal(prevState => !prevState);
   }
+
   function openDeletePopUp() {
     setOpenDeleteModal(prevState => !prevState);
   }
 
   return (
     <Card className={classes.root}>
-      <Grid container justify="center">
+      <Grid container item direction="column" alignItems="center">
         <CardContent>
-          <Typography color="primary" variant="h5" component="h2">
+          <Typography
+            color="primary"
+            variant="h5"
+            component="h2"
+            align="center"
+          >
             {recipe.name}
           </Typography>
           <CardMedia

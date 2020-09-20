@@ -11,11 +11,14 @@ import CookbookCard from "./CookbookCard";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   container: {
     marginTop: "5rem",
+    [theme.breakpoints.up("sm")]: {
+      marginTop: "6rem",
+    },
   },
-});
+}));
 
 export default function Cookbooks() {
   const [name, setName] = useState("");
@@ -35,11 +38,7 @@ export default function Cookbooks() {
     axios
       .get("/cookbooks")
       .then(responses => setCookbooks(responses.data))
-      .catch(error =>
-        setGetError(
-          "Erreur serveur - Impossible de récupérer les livres de recettes, veuillez réessayer plus tard."
-        )
-      );
+      .catch(error => setGetError(error.response.status));
   }
 
   function onChange(event) {
@@ -85,9 +84,9 @@ export default function Cookbooks() {
   function describeError(error) {
     switch (error) {
       case 406:
-        return "Ce nom existe déjà, veuillez en choisir un autre";
+        return "Ce nom existe déjà, veuillez en choisir un autre.";
       case 500:
-        return "Erreur serveur - Impossible d'enregister le livre de recettes";
+        return "Erreur serveur - Impossible d'afficher ou d'envoyer des données, veuillez réessayer plus tard.";
       default:
         return "";
     }
@@ -96,28 +95,32 @@ export default function Cookbooks() {
   return (
     <Grid
       container
-      justify="space-around"
-      alignItems="center"
       direction="column"
+      alignItems="center"
       className={classes.container}
     >
-      <TextField
-        error={postError}
-        helperText={describeError(postError)}
-        style={{ width: "20rem" }}
-        value={name}
-        onChange={onChange}
-        label="Entrez le nom de votre livre de recettes"
-        required
-      />
+      <Grid container item xs={10} sm={8} md={6} lg={3}>
+        <TextField
+          fullWidth
+          required
+          label="Entrez le nom de votre livre de recettes"
+          value={name}
+          onChange={onChange}
+          onFocus={() => setPostError(false)}
+          error={postError}
+          helperText={describeError(postError)}
+        />
+      </Grid>
       <Box my={2}>
         <Button onClick={createCookbook} variant="contained" color="primary">
           Créer
         </Button>
       </Box>
-      <Grid item container justify="center">
-        {cookbooks
-          ? cookbooks.map(cookbook => (
+
+      <Grid container spacing={1} item xs={11} md={10} lg={6} s>
+        {cookbooks ? (
+          cookbooks.map(cookbook => (
+            <Grid item lg={6}>
               <CookbookCard
                 key={cookbook.id}
                 cookbook={cookbook}
@@ -126,11 +129,16 @@ export default function Cookbooks() {
                 recipes={recipes}
                 deleteRecipeFromCookbook={deleteRecipeFromCookbook}
               />
-            ))
-          : !getError && <CircularProgress />}
+            </Grid>
+          ))
+        ) : (
+          <Box mt={25}>{!getError && <CircularProgress />}</Box>
+        )}
       </Grid>
       {deleteError && <Typography align="center">{deleteError}</Typography>}
-      {getError && <Typography align="center">{getError}</Typography>}
+      {getError && (
+        <Typography align="center">{describeError(getError)}</Typography>
+      )}
     </Grid>
   );
 }
