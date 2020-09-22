@@ -10,6 +10,7 @@ import {
 import CookbookCard from "./CookbookCard";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
+import PopUp from "../PopUp";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -26,7 +27,9 @@ export default function Cookbooks() {
   const [getError, setGetError] = useState();
   const [postError, setPostError] = useState();
   const [deleteError, setDeleteError] = useState();
+  const [addError, setAddError] = useState();
   const [recipes, setRecipes] = useState([{}]);
+  const [confirmationModal, setConfirmationModal] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
@@ -69,10 +72,18 @@ export default function Cookbooks() {
     axios.get("/recipes").then(responses => setRecipes(responses.data));
   }
 
-  function addRecipeToCookbook(cookbookId, recipeId) {
-    axios
-      .post("/cookbooks/" + cookbookId + "/recipe/" + recipeId)
-      .then(() => getCookbooks());
+  async function addRecipeToCookbook(cookbookId, recipeId) {
+    try {
+      const response = await axios.post(
+        "/cookbooks/" + cookbookId + "/recipe/" + recipeId
+      );
+      if (response) {
+        getCookbooks();
+        setConfirmationModal(true);
+      }
+    } catch (error) {
+      setAddError(true);
+    }
   }
 
   function deleteRecipeFromCookbook(cookbookId, recipeId) {
@@ -90,6 +101,14 @@ export default function Cookbooks() {
       default:
         return "";
     }
+  }
+
+  function handleOpen() {
+    setConfirmationModal(prevState => !prevState);
+  }
+
+  function handleOpenError() {
+    setAddError(prevState => !prevState);
   }
 
   return (
@@ -138,6 +157,20 @@ export default function Cookbooks() {
       {deleteError && <Typography align="center">{deleteError}</Typography>}
       {getError && (
         <Typography align="center">{describeError(getError)}</Typography>
+      )}
+      {confirmationModal && (
+        <PopUp
+          open={confirmationModal}
+          handleOpen={handleOpen}
+          title={"La recette a bien été ajoutée"}
+        />
+      )}
+      {addError && (
+        <PopUp
+          open={addError}
+          handleOpen={handleOpenError}
+          title={"La recette est déjà présente dans le livre de recette"}
+        />
       )}
     </Grid>
   );

@@ -6,6 +6,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
+import PopUp from "../PopUp";
 import {
   Button,
   Typography,
@@ -26,7 +27,12 @@ export default function CookbookCard({
   deleteRecipeFromCookbook,
 }) {
   const classes = useStyles();
-  const [recipe, setRecipe] = useState({});
+  const [recipe, setRecipe] = useState();
+  const [openModal, setOpenModal] = useState(false);
+
+  function openRecipesPopUp() {
+    setOpenModal(prevState => !prevState);
+  }
 
   function handleChange(event) {
     setRecipe(event.target.value);
@@ -64,6 +70,7 @@ export default function CookbookCard({
                 color="primary"
                 variant="outlined"
                 onClick={() => addRecipeToCookbook(cookbook.id, recipe.id)}
+                disabled={!recipe}
               >
                 Ajouter
               </Button>
@@ -71,7 +78,7 @@ export default function CookbookCard({
           </FormControl>
         </Grid>
         <CardActions>
-          <Button onClick={() => deleteCookbook(cookbook.id)}>
+          <Button onClick={() => openRecipesPopUp()}>
             <FormatListBulletedIcon />
           </Button>
           <Button onClick={() => deleteCookbook(cookbook.id)}>
@@ -79,6 +86,16 @@ export default function CookbookCard({
           </Button>
         </CardActions>
       </Grid>
+      {openModal && (
+        <PopUp
+          title={"Liste des recettes"}
+          open={openModal}
+          cookbook={cookbook}
+          items={cookbook.recipes}
+          handleOpen={openRecipesPopUp}
+          deleteRecipeFromCookbook={deleteRecipeFromCookbook}
+        />
+      )}
     </Card>
   );
 }

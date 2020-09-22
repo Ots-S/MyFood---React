@@ -13,6 +13,8 @@ import RecipeCard from "./RecipeCard";
 import { makeStyles } from "@material-ui/styles";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 
+// TODO CORRIGER LE DELETE DU POP UP
+
 const useStyles = makeStyles(theme => ({
   container: {
     marginTop: "5rem",
@@ -52,7 +54,9 @@ function Recipes() {
     }
   }
 
-  function removeIngredientFromRecipe(ingredient) {
+  function removeIngredientFromRecipe() {}
+
+  function unselectIngredientFromRecipe(ingredient) {
     const newIngredientsList = recipeIngredients.filter(
       eachIngredient => eachIngredient.id !== ingredient.id
     );
@@ -166,7 +170,7 @@ function Recipes() {
             <Grid item>
               <Button
                 key={ingredient.id}
-                onClick={() => removeIngredientFromRecipe(ingredient)}
+                onClick={() => unselectIngredientFromRecipe(ingredient)}
               >
                 {ingredient.name}
                 <DeleteOutlineIcon fontize="small" />

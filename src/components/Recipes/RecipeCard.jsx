@@ -71,6 +71,7 @@ export default function RecipeCard({ recipe, deleteRecipe }) {
       </Grid>
       {openModal && (
         <PopUp
+          title={"Liste des ingrédients"}
           open={openModal}
           items={recipe.ingredients}
           handleOpen={openIngredientsPopUp}
