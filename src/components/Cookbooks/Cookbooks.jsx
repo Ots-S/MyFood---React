@@ -10,7 +10,7 @@ import {
 import CookbookCard from "./CookbookCard";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
-import PopUp from "../PopUp";
+import ConfirmationModal from "../ConfirmationModal";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -159,14 +159,14 @@ export default function Cookbooks() {
         <Typography align="center">{describeError(getError)}</Typography>
       )}
       {confirmationModal && (
-        <PopUp
+        <ConfirmationModal
           open={confirmationModal}
           handleOpen={handleOpen}
           title={"La recette a bien été ajoutée"}
         />
       )}
       {addError && (
-        <PopUp
+        <ConfirmationModal
           open={addError}
           handleOpen={handleOpenError}
           title={"La recette est déjà présente dans le livre de recette"}

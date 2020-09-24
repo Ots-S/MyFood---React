@@ -6,7 +6,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
-import PopUp from "../PopUp";
+import ConfirmationModal from "../ConfirmationModal";
 import {
   Button,
   Typography,
@@ -17,7 +17,9 @@ import {
   MenuItem,
 } from "@material-ui/core";
 
-const useStyles = makeStyles({ root: { width: "100%" } });
+const useStyles = makeStyles({
+  root: { width: "100%" },
+});
 
 export default function CookbookCard({
   cookbook,
@@ -87,7 +89,7 @@ export default function CookbookCard({
         </CardActions>
       </Grid>
       {openModal && (
-        <PopUp
+        <ConfirmationModal
           title={"Liste des recettes"}
           open={openModal}
           cookbook={cookbook}

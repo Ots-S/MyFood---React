@@ -12,26 +12,33 @@ import {
 } from "@material-ui/core";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
-import PopUp from "../PopUp";
-import DeleteConfirmationPopUp from "../DeleteConfirmationPopUp";
+import ConfirmationModal from "../ConfirmationModal";
+import DeleteConfirmationModal from "../DeleteConfirmationModal";
+import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 
 const useStyles = makeStyles({
-  root: { width: "100%" },
+  root: {},
   title: {
     fontSize: 14,
   },
   image: {
     borderRadius: 10,
     height: "5rem",
-
     objectFit: "cover",
   },
 });
 
-export default function RecipeCard({ recipe, deleteRecipe }) {
+export default function RecipeCard({
+  recipe,
+  deleteRecipe,
+  removeIngredientFromRecipe,
+  addIngredientToRecipe,
+  ingredients,
+}) {
   const classes = useStyles();
   const [openModal, setOpenModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openAddingModal, setOpenAddingModal] = useState(false);
 
   function openIngredientsPopUp() {
     setOpenModal(prevState => !prevState);
@@ -39,6 +46,10 @@ export default function RecipeCard({ recipe, deleteRecipe }) {
 
   function openDeletePopUp() {
     setOpenDeleteModal(prevState => !prevState);
+  }
+
+  function openAddingIngredientModal() {
+    setOpenAddingModal(prevState => !prevState);
   }
 
   return (
@@ -61,6 +72,9 @@ export default function RecipeCard({ recipe, deleteRecipe }) {
           />
         </CardContent>
         <CardActions>
+          <Button color="primary" onClick={openAddingIngredientModal}>
+            <PlaylistAddIcon />
+          </Button>
           <Button color="primary" onClick={openIngredientsPopUp}>
             <FormatListBulletedIcon />
           </Button>
@@ -70,19 +84,33 @@ export default function RecipeCard({ recipe, deleteRecipe }) {
         </CardActions>
       </Grid>
       {openModal && (
-        <PopUp
+        <ConfirmationModal
           title={"Liste des ingrédients"}
           open={openModal}
           items={recipe.ingredients}
           handleOpen={openIngredientsPopUp}
+          removeIngredientFromRecipe={removeIngredientFromRecipe}
+          recipe={recipe}
         />
       )}
       {openDeleteModal && (
-        <DeleteConfirmationPopUp
+        <DeleteConfirmationModal
+          title={"Êtes-vous sûr de vouloir supprimer cette recette ?"}
+          element={recipe}
           open={openDeleteModal}
           handleOpen={openDeletePopUp}
-          item={recipe}
           deleteElement={deleteRecipe}
+        />
+      )}
+      {openAddingModal && (
+        <ConfirmationModal
+          title={"Ajouter un ingrédient"}
+          open={openAddingModal}
+          items={ingredients}
+          handleOpen={openAddingIngredientModal}
+          recipe={recipe}
+          adding={true}
+          addIngredientToRecipe={addIngredientToRecipe}
         />
       )}
     </Card>

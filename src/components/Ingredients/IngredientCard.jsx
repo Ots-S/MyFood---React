@@ -8,11 +8,10 @@ import {
   CardMedia,
   CardActions,
   CardContent,
-  Tooltip,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import DeleteConfirmationPopUp from "../DeleteConfirmationPopUp";
+import DeleteConfirmationModal from "../DeleteConfirmationModal";
 
 const useStyles = makeStyles({
   ingredientContainer: {
@@ -24,6 +23,7 @@ const useStyles = makeStyles({
     height: "5rem",
     objectFit: "cover",
   },
+  deleteButton: { "&:hover": { color: "teal" } },
 });
 
 export default function IngredientContainer({ ingredient, deleteIngredient }) {
@@ -49,18 +49,17 @@ export default function IngredientContainer({ ingredient, deleteIngredient }) {
           title={ingredient.name}
         />
         <CardActions>
-          <Tooltip title="Supprimer l'ingrédient">
-            <Button onClick={() => setOpen(prev => !prev)}>
-              <DeleteOutlineIcon />
-            </Button>
-          </Tooltip>
+          <Button onClick={() => setOpen(prev => !prev)}>
+            <DeleteOutlineIcon className={classes.deleteButton} />
+          </Button>
         </CardActions>
       </Grid>
-      <DeleteConfirmationPopUp
+      <DeleteConfirmationModal
+        title={"Êtes-vous sûr de vouloir supprimer cet ingrédient ?"}
+        element={ingredient}
         open={open}
         handleOpen={handleOpen}
-        deleteIngredient={deleteIngredient}
-        item={ingredient}
+        deleteElement={deleteIngredient}
       />
     </Card>
   );

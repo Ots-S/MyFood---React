@@ -133,10 +133,9 @@ export default function Ingredients() {
       </Box>
       {ingredients ? (
         <Grid container spacing={1} item xs={11} md={10} lg={6}>
-          {ingredients.map((ingredient, i) => (
+          {ingredients.map(ingredient => (
             <Grid item xs={4} md={4} lg={3} key={ingredient.id}>
               <IngredientCard
-                key={i}
                 ingredient={ingredient}
                 deleteIngredient={deleteIngredient}
               />

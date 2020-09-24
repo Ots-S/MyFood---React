@@ -13,8 +13,6 @@ import RecipeCard from "./RecipeCard";
 import { makeStyles } from "@material-ui/styles";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 
-// TODO CORRIGER LE DELETE DU POP UP
-
 const useStyles = makeStyles(theme => ({
   container: {
     marginTop: "5rem",
@@ -48,13 +46,17 @@ function Recipes() {
     axios.get("/ingredients").then(response => setIngredients(response.data));
   }
 
-  function addIngredientToRecipe(ingredient) {
+  function addIngredientToRecipeCreation(ingredient) {
     if (!recipeIngredients.includes(ingredient)) {
       setRecipeIngredients(prevState => [...prevState, ingredient]);
     }
   }
 
-  function removeIngredientFromRecipe() {}
+  function removeIngredientFromRecipe(recipe, ingredient) {
+    axios
+      .delete("/recipes/" + recipe + "/ingredient/" + ingredient)
+      .then(() => getRecipes());
+  }
 
   function unselectIngredientFromRecipe(ingredient) {
     const newIngredientsList = recipeIngredients.filter(
@@ -111,6 +113,12 @@ function Recipes() {
     }
   }
 
+  function addIngredientToRecipe(recipeId, ingredientId) {
+    axios
+      .post(`/recipes/${recipeId}/ingredient/${ingredientId}`)
+      .then(getRecipes());
+  }
+
   return (
     <Grid
       container
@@ -147,7 +155,7 @@ function Recipes() {
             disableClearable
             value={ingredient}
             onChange={(event, newIngredient) => {
-              addIngredientToRecipe(newIngredient);
+              addIngredientToRecipeCreation(newIngredient);
             }}
             id="Ajouter un ingrédient"
             options={ingredients}
@@ -192,11 +200,14 @@ function Recipes() {
       {recipes ? (
         <Grid container spacing={1} item xs={11} md={10} lg={6}>
           {recipes.map(recipe => (
-            <Grid item lg={6}>
+            <Grid item lg={6} sm={6} lg={6}>
               <RecipeCard
                 key={recipe.id}
                 recipe={recipe}
                 deleteRecipe={deleteRecipe}
+                removeIngredientFromRecipe={removeIngredientFromRecipe}
+                addIngredientToRecipe={addIngredientToRecipe}
+                ingredients={ingredients}
               />
             </Grid>
           ))}
