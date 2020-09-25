@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -10,6 +10,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
+
+// TODO corriger bug ajout"
 
 export default function ConfirmationModal({
   recipe,
@@ -21,62 +24,65 @@ export default function ConfirmationModal({
   deleteRecipeFromCookbook,
   removeIngredientFromRecipe,
   adding,
+  addIngredientToRecipe,
 }) {
   function checkIfAlreadyAdded(ingredient) {
     let alreayPresent = false;
-    for (let i = 0; i < recipe.ingredients.length; i++) {
-      console.log(recipe.ingredients[i]);
-      if (recipe.ingredients[i].id === ingredient.id) {
+    recipe.ingredients.forEach(function (ingredientInRecipe) {
+      if (ingredientInRecipe.id === ingredient.id) {
         alreayPresent = true;
       }
-    }
+    });
     return alreayPresent;
   }
 
+  function addIngredient(recipe, ingredient) {
+    addIngredientToRecipe(recipe, ingredient);
+  }
+
   return (
-    <Dialog
-      open={open}
-      aria-labelledby="dialog-title"
-      aria-describedby="dialog-description"
-    >
+    <Dialog open={open}>
       <DialogTitle id="dialog-title">{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {items &&
-            items.map(item => (
-              <Grid
-                key={item.id}
-                container
-                justify="space-between"
-                alignItems="center"
-              >
-                <Grid item>
-                  <Typography variant="body2" key={item.id}>
-                    {item.name}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  {adding && checkIfAlreadyAdded(item) ? (
-                    <Button></Button>
-                  ) : adding && !checkIfAlreadyAdded(item) ? (
-                    <Button>
-                      <AddIcon />}
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={
-                        deleteRecipeFromCookbook
-                          ? () => deleteRecipeFromCookbook(cookbook.id, item.id)
-                          : () => removeIngredientFromRecipe(recipe.id, item.id)
-                      }
-                    >
-                      X
-                    </Button>
-                  )}
-                </Grid>
+        {items &&
+          items.map(item => (
+            <Grid
+              key={item.id}
+              container
+              justify="space-between"
+              alignItems="center"
+            >
+              <Grid item>
+                <Typography variant="body2" key={item.id}>
+                  {item.name}
+                </Typography>
               </Grid>
-            ))}
-        </DialogContentText>
+              <Grid item>
+                {adding ? (
+                  <Button
+                    disabled={checkIfAlreadyAdded(item)}
+                    onClick={() => addIngredient(recipe.id, item.id)}
+                  >
+                    {checkIfAlreadyAdded(item) ? (
+                      <PlaylistAddCheckIcon />
+                    ) : (
+                      <AddIcon />
+                    )}
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={
+                      deleteRecipeFromCookbook
+                        ? () => deleteRecipeFromCookbook(cookbook.id, item.id)
+                        : () => removeIngredientFromRecipe(recipe.id, item.id)
+                    }
+                  >
+                    X
+                  </Button>
+                )}
+              </Grid>
+            </Grid>
+          ))}
       </DialogContent>
       <DialogActions>
         <Grid container justify="center">

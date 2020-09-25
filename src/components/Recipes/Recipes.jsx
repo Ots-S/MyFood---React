@@ -116,7 +116,7 @@ function Recipes() {
   function addIngredientToRecipe(recipeId, ingredientId) {
     axios
       .post(`/recipes/${recipeId}/ingredient/${ingredientId}`)
-      .then(getRecipes());
+      .then(getRecipes()).catch(error => console.log(error));
   }
 
   return (
@@ -200,7 +200,7 @@ function Recipes() {
       {recipes ? (
         <Grid container spacing={1} item xs={11} md={10} lg={6}>
           {recipes.map(recipe => (
-            <Grid item lg={6} sm={6} lg={6}>
+            <Grid item lg={6} sm={6} lg={6} key={recipe.id}>
               <RecipeCard
                 key={recipe.id}
                 recipe={recipe}
@@ -213,8 +213,8 @@ function Recipes() {
           ))}
         </Grid>
       ) : (
-        <Box mt={25}>{!getError && <CircularProgress color="primary" />}</Box>
-      )}
+          <Box mt={25}>{!getError && <CircularProgress color="primary" />}</Box>
+        )}
       <Grid item>
         {getError && (
           <Typography align="center">{describeError(getError)}</Typography>
