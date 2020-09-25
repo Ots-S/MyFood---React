@@ -4,12 +4,12 @@ import {
   Button,
   CircularProgress,
   Grid,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import axios from "axios";
 import IngredientCard from "./IngredientCard";
 import { makeStyles } from "@material-ui/core/styles";
+import Input from "../Input";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Ingredients() {
-  const [ingredient, setIngredient] = useState();
+  const [ingredient, setIngredient] = useState("");
   const [ingredients, setIngredients] = useState();
   const [image, setImage] = useState("");
   const [getError, setGetError] = useState("");
@@ -99,9 +99,7 @@ export default function Ingredients() {
       className={classes.container}
     >
       <Grid container item xs={10} sm={8} md={6} lg={3}>
-        <TextField
-          fullWidth
-          required
+        <Input
           label="Entrez le nom d'un ingrédient"
           value={ingredient}
           onChange={onChange}
@@ -109,9 +107,7 @@ export default function Ingredients() {
           error={postError}
           helperText={postError && describeError(postError)}
         />
-        <TextField
-          fullWidth
-          required
+        <Input
           label="Entrez le lien d'une image (.jpg ou .png)"
           value={image}
           onChange={onChangeImage}

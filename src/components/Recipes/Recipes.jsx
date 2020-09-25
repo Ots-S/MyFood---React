@@ -12,6 +12,7 @@ import axios from "axios";
 import RecipeCard from "./RecipeCard";
 import { makeStyles } from "@material-ui/styles";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import Input from "../Input";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -116,7 +117,8 @@ function Recipes() {
   function addIngredientToRecipe(recipeId, ingredientId) {
     axios
       .post(`/recipes/${recipeId}/ingredient/${ingredientId}`)
-      .then(getRecipes()).catch(error => console.log(error));
+      .then(() => getRecipes())
+      .catch(error => console.log(error));
   }
 
   return (
@@ -127,9 +129,7 @@ function Recipes() {
       className={classes.container}
     >
       <Grid container item xs={10} sm={8} md={6} lg={3}>
-        <TextField
-          fullWidth
-          required
+        <Input
           label="Nom de la recette"
           value={recipeName}
           onChange={event => setRecipeName(event.target.value)}
@@ -137,9 +137,7 @@ function Recipes() {
           error={postError}
           helperText={describeError(postError)}
         />
-        <TextField
-          fullWidth
-          required
+        <Input
           label="Photo de la recette"
           value={image}
           onChange={event => setImage(event.target.value)}
@@ -213,8 +211,8 @@ function Recipes() {
           ))}
         </Grid>
       ) : (
-          <Box mt={25}>{!getError && <CircularProgress color="primary" />}</Box>
-        )}
+        <Box mt={25}>{!getError && <CircularProgress color="primary" />}</Box>
+      )}
       <Grid item>
         {getError && (
           <Typography align="center">{describeError(getError)}</Typography>

@@ -29,14 +29,14 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
   },
   list: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       display: "flex",
       flexDirection: "row",
       justifyContent: "center",
     },
   },
   appBar: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },
@@ -44,13 +44,13 @@ const useStyles = makeStyles(theme => ({
   },
   whiteMenuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       display: "none",
     },
   },
   blackMenuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       display: "none",
     },
   },
@@ -172,7 +172,7 @@ export default function ResponsiveDrawer() {
             {drawer}
           </Drawer>
         </Hidden>
-        <Hidden xsDown implementation="css">
+        <Hidden smDown implementation="css">
           <Drawer anchor="top" variant="permanent" open>
             {drawer}
           </Drawer>

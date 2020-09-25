@@ -12,8 +12,6 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
 
-// TODO corriger bug ajout"
-
 export default function ConfirmationModal({
   recipe,
   cookbook,

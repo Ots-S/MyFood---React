@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Grid,
-  TextField,
   Button,
   Box,
   Typography,
@@ -11,6 +10,7 @@ import CookbookCard from "./CookbookCard";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import ConfirmationModal from "../ConfirmationModal";
+import Input from "../Input";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -119,9 +119,7 @@ export default function Cookbooks() {
       className={classes.container}
     >
       <Grid container item xs={10} sm={8} md={6} lg={3}>
-        <TextField
-          fullWidth
-          required
+        <Input
           label="Entrez le nom de votre livre de recettes"
           value={name}
           onChange={onChange}
