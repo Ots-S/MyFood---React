@@ -29,7 +29,7 @@ export default function CookbookCard({
   deleteRecipeFromCookbook,
 }) {
   const classes = useStyles();
-  const [recipe, setRecipe] = useState();
+  const [recipe, setRecipe] = useState("");
   const [openModal, setOpenModal] = useState(false);
 
   function openRecipesPopUp() {
@@ -39,6 +39,12 @@ export default function CookbookCard({
   function handleChange(event) {
     setRecipe(event.target.value);
   }
+
+  function addRecipCookbook() {
+    addRecipeToCookbook(cookbook.id, recipe.id);
+    setRecipe("");
+  }
+
   return (
     <Card className={classes.root}>
       <Grid container item justify="center">
@@ -71,7 +77,7 @@ export default function CookbookCard({
                 size="small"
                 color="primary"
                 variant="outlined"
-                onClick={() => addRecipeToCookbook(cookbook.id, recipe.id)}
+                onClick={() => addRecipCookbook(cookbook.id, recipe.id)}
                 disabled={!recipe}
               >
                 Ajouter

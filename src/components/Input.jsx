@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { TextField } from "@material-ui/core";
 
-function Input({
+export default function Input({
   label,
   value,
   onChange,
@@ -26,6 +26,12 @@ function Input({
   );
 }
 
-Input.propTypes = {};
-
-export default Input;
+Input.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onFocus: PropTypes.func.isRequired,
+  error: PropTypes.bool.isRequired,
+  helperText: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  className: PropTypes.string,
+};

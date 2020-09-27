@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
-  Grid,
-  Button,
   Box,
-  Typography,
+  Button,
   CircularProgress,
+  Grid,
+  Typography,
 } from "@material-ui/core";
 import CookbookCard from "./CookbookCard";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import ConfirmationModal from "../ConfirmationModal";
 import Input from "../Input";
+import { Context } from "../../Context"
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -22,13 +23,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Cookbooks() {
+  const { getRecipes, recipes } = useContext(Context)
   const [name, setName] = useState("");
   const [cookbooks, setCookbooks] = useState();
   const [getError, setGetError] = useState();
   const [postError, setPostError] = useState();
   const [deleteError, setDeleteError] = useState();
   const [addError, setAddError] = useState();
-  const [recipes, setRecipes] = useState([{}]);
   const [confirmationModal, setConfirmationModal] = useState(false);
   const classes = useStyles();
 
@@ -53,6 +54,7 @@ export default function Cookbooks() {
     axios
       .post("/cookbooks", newCookbook)
       .then(() => getCookbooks())
+      .then(() => setName(""))
       .catch(error => setPostError(error.response.status));
   }
 
@@ -60,16 +62,11 @@ export default function Cookbooks() {
     axios
       .delete("/cookbooks/" + id)
       .then(() => getCookbooks())
-
       .catch(error =>
         setDeleteError(
           "Erreur serveur - Le livre de recette n'a pas été supprimé, veuillez réesayer plus tard"
         )
       );
-  }
-
-  function getRecipes() {
-    axios.get("/recipes").then(responses => setRecipes(responses.data));
   }
 
   async function addRecipeToCookbook(cookbookId, recipeId) {
@@ -133,13 +130,11 @@ export default function Cookbooks() {
           Créer
         </Button>
       </Box>
-
-      <Grid container spacing={1} item xs={11} md={10} lg={6} s>
-        {cookbooks ? (
-          cookbooks.map(cookbook => (
-            <Grid item lg={6}>
+      {cookbooks ? (
+        <Grid container spacing={1} item xs={11} md={10} lg={6}>
+          {cookbooks.map(cookbook => (
+            <Grid item lg={6} key={cookbook.id}>
               <CookbookCard
-                key={cookbook.id}
                 cookbook={cookbook}
                 deleteCookbook={deleteCookbook}
                 addRecipeToCookbook={addRecipeToCookbook}
@@ -147,15 +142,17 @@ export default function Cookbooks() {
                 deleteRecipeFromCookbook={deleteRecipeFromCookbook}
               />
             </Grid>
-          ))
-        ) : (
+          ))}
+        </Grid>
+      ) : (
           <Box mt={25}>{!getError && <CircularProgress />}</Box>
         )}
+      <Grid item>
+        {deleteError && <Typography align="center">{deleteError}</Typography>}
       </Grid>
-      {deleteError && <Typography align="center">{deleteError}</Typography>}
-      {getError && (
-        <Typography align="center">{describeError(getError)}</Typography>
-      )}
+      <Grid item>
+        {getError && (
+          <Typography align="center">{describeError(getError)}</Typography>)}</Grid>
       {confirmationModal && (
         <ConfirmationModal
           open={confirmationModal}
@@ -168,8 +165,7 @@ export default function Cookbooks() {
           open={addError}
           handleOpen={handleOpenError}
           title={"La recette est déjà présente dans le livre de recette"}
-        />
-      )}
+        />)}
     </Grid>
-  );
+  )
 }

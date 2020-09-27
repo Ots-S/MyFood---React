@@ -60,7 +60,6 @@ const useStyles = makeStyles(theme => ({
   link: {
     fontWeight: "400",
   },
-  // necessary for content to be below app bar
   drawerPaper: {
     width: drawerWidth,
   },
